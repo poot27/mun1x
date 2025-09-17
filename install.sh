@@ -26,3 +26,9 @@ sudo sh ./get-docker.sh --dry-run
 export CURRENT=$(pwd)
 cd $CURRENT/docker
 docker compose up -d
+
+# Attach
+echo "CTRL + C"
+sudo docker compose attach minecraft --detach-keys "ctrl-c"
+
+alias mc 

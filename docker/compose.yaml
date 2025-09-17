@@ -1,31 +1,19 @@
-#networks:
-#  dev:
-#    driver: bridge
+# https://docker-minecraft-server.readthedocs.io/en/latest/
 
 services:
-#  nginx:
-#    image: nginx:stable-alpine
-#    container_name: nginx
-#    restart: always
-#    ports:
-#      - "80:80"
-#    volumes: 
-#      - ./config/nginx.conf:/etc/nginx/nginx.conf/
-#    networks:
-#      - dev
-
   nginx:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - "80:80"
+      - "8080:8080"
       - "25566:25566" # For raw TCP forwarding
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx.conf:/etc/nginx/conf.d/
     depends_on:
       - minecraft
 
   minecraft:
+    container_name: minecraft
     image: itzg/minecraft-server:latest
     tty: true
     stdin_open: true
