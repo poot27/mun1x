@@ -51,5 +51,3 @@ services:
       ENABLE_ROLLING_LOGS: "true"
     volumes:
       - "./data:/data"
-volumes:
-  ./config:/config: {}
