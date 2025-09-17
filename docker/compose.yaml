@@ -1,20 +1,31 @@
-networks:
-  dev:
-    driver: bridge
+#networks:
+#  dev:
+#    driver: bridge
 
 services:
+#  nginx:
+#    image: nginx:stable-alpine
+#    container_name: nginx
+#    restart: always
+#    ports:
+#      - "80:80"
+#    volumes: 
+#      - ./config/nginx.conf:/etc/nginx/nginx.conf/
+#    networks:
+#      - dev
+
   nginx:
-    image: nginx:stable-alpine
+    image: nginx:alpine
     container_name: nginx
-    restart: always
     ports:
       - "80:80"
-    volumes: 
-      - ./config:/etc/nginx/conf.d/
-    networks:
-      - dev
+      - "25566:25566" # For raw TCP forwarding
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - minecraft
 
-  mc:
+  minecraft:
     image: itzg/minecraft-server:latest
     tty: true
     stdin_open: true
@@ -24,8 +35,8 @@ services:
       EULA: "TRUE"
       TYPE: "NEOFORGE"
       VERSION: "1.21.1"
-      NEOFORGE_VERSION: "129"
-      MEMORY: "6144M"
+      NEOFORGE_VERSION: "21.1.129"
+      MEMORY: "2048M"
       MAX_PLAYERS: "2"
       MOTD: "Hello, World!"
       USE_AIKAR_FLAGS: "true"
@@ -33,21 +44,21 @@ services:
       TZ: "Europe/Oslo"
       DIFFICULTY: "2"
       ENABLE_COMMAND_BLOCK: "true"
-      ENTITY_BROADCAST_RANGE_PERCENTAGE: "109"
-      SIMULATION_DISTANCE: "11"
-      VIEW_DISTANCE: "11"
+      ENTITY_BROADCAST_RANGE_PERCENTAGE: "100"
+      SIMULATION_DISTANCE: "10"
+      VIEW_DISTANCE: "10"
       LEVEL_TYPE: "flat"
-      MODS: |-
-        https://modrinth.com
-        http://example.com/mod.jar
-      DATAPACKS: |-
-        http://example.com/datapack.zip
-      VANILLATWEAKS_FILE: |-
-        /config/datapacks.json
+#      MODS: |-
+#        https://modrinth.com
+#        http://example.com/mod.jar
+#      DATAPACKS: |-
+#        http://example.com/datapack.zip
+#      VANILLATWEAKS_FILE: |-
+#        /config/datapacks.json
       PLAYER_IDLE_TIMEOUT: "15"
       PREVIEWS_CHAT: "true"
       ALLOW_FLIGHT: "true"
-      JVM_OPTS: "jvm123"
+#      JVM_OPTS: "jvm123"
       ENABLE_ROLLING_LOGS: "true"
     volumes:
       - "./data:/data"
